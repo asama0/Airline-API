@@ -57,12 +57,10 @@ class Booking(models.Model):
     flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     payment_provider = models.ForeignKey(PaymentProvider, on_delete=models.CASCADE)
-    price = models.FloatField()
-    booking_datetime = models.DateTimeField(auto_now_add=True)
-    booking_status = models.IntegerField()
+    Booking_Status= [('1','on_hold '),('2','confirmed'), ('3','cancelled')]
+    booking_status = models.CharField(max_length=255, choices=Booking_Status, default= 'on_hold')
     transaction_id = models.IntegerField()
-    success_key = models.CharField(max_length=255)
-
+     
     def __str__(self):
         return f"Booking {self.id} - {self.customer} - {self.flight}"
 

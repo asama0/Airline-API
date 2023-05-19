@@ -7,7 +7,8 @@ from ..serializers.serializers import BookingSerializer
 
 
 class CancelBookingView(APIView):
-    def put(self, request):
+    def put(self, request):   # Remove booking_id here
+
         booking_id = request.data.get('booking_id')
 
         if not booking_id:
@@ -18,10 +19,8 @@ class CancelBookingView(APIView):
         except Booking.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        booking.booking_status = "cancelled"
+        booking.booking_status = "3"
         booking.save()
-
-        # Refund the customer
 
         serializer = BookingSerializer(booking)
         return Response(serializer.data, status=status.HTTP_200_OK)

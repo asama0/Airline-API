@@ -25,3 +25,12 @@ class UpdateBookingView(APIView):
 
         serializer = BookingSerializer(booking)
         return Response(serializer.data, status=status.HTTP_200_OK)
+class BookingDetailView(APIView):
+    def get(self, request, booking_id):
+        try:
+            booking = Booking.objects.get(id=booking_id)
+        except Booking.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = BookingSerializer(booking)
+        return Response(serializer.data, status=status.HTTP_200_OK)

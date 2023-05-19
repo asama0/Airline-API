@@ -19,7 +19,6 @@ from .endpoints.FlightDetails import FlightDetailsView
 from .endpoints.FlightSearch import FlightSearchView
 from .endpoints.PayBooking import PayBookingView
 from .endpoints.BookFlight import BookFlightView
-from .endpoints.BookingDetails import BookingDetailsView
 from .endpoints.ConfirmBooking import ConfirmBookingView
 from .endpoints.UpdateBooking import UpdateBookingView
 from .endpoints.CancelBooking import CancelBookingView
@@ -31,12 +30,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/flight/<int:flight_id>', FlightDetailsView.as_view()),
     path('api/flights', FlightSearchView.as_view()),
-    path('api/paybooking/{booking_id}', PayBookingView.as_view()),
+    path('api/paybooking/<int:booking_id>', PayBookingView.as_view(), name='pay-booking'),
+
     path('api/book', BookFlightView.as_view()),
-    path('api/booking/{booking_id}', BookingDetailsView.as_view()),
+    path('api/booking/<int:booking_id>', UpdateBookingView.as_view()),
+
     path('api/confirmbooking', ConfirmBookingView.as_view()),
-    path('api/booking/{booking_id}', UpdateBookingView.as_view()),
-    path('api/cancelbooking', CancelBookingView.as_view()),
+    path('api/cancelbooking', CancelBookingView.as_view(), name='cancel_booking'),
     path('api/paymentproviders', PaymentProvidersListView.as_view())
 
 ]

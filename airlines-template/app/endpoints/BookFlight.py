@@ -19,14 +19,20 @@ class BookFlightView(APIView):
         except Flight.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        if len(customers) > flight.available_seats:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        bookings = []
+        for customer_id in customers:
+            try:
+                customer = Customer.objects.get(id=customer_id)
+            except Customer.DoesNotExist:
+                continue  
 
-        booking = Booking.objects.create(
-            flight=flight,
-            customers=customers,
-            booking_status="on_hold"
-        )
+            booking = Booking.objects.create(
+                flight=flight,
+                customer=customer,
+                booking_status="on_hold"
+            )
+            bookings.append(booking)
 
-        serializer = BookingSerializer(booking)
+        serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
